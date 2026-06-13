@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remote Rentals — Remote Rental Management, Made Simple.</title>
+<meta name="description" content="Track rent payments, send tenant reminders, manage maintenance requests, and stay in control of your properties from anywhere.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+--black:#080808;--navy:#0D1B2A;--navy-deep:#07111e;
+--gold:#D4AF37;--gold-light:#E8CC6A;--gold-dark:#B8960C;
+--royal:#003399;--royal-light:#1a4db8;
+--cream:#F5F0E8;--cream-dark:#EDE8DF;
+--white:#fff;
+--f-serif:'Cormorant Garamond',Georgia,serif;
+--f-sans:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+--ease:cubic-bezier(.25,.46,.45,.94);
+--spring:cubic-bezier(.34,1.56,.64,1);
+--smooth:cubic-bezier(.4,0,.2,1);
+--r-sm:8px;--r-md:16px;--r-lg:24px;--r-xl:32px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:var(--f-sans);background:var(--black);color:var(--white);overflow-x:hidden;line-height:1.6}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:2px}
+
+/* ── EYEBROW ── */
+.eyebrow{
+  font-family:var(--f-sans);font-size:10px;font-weight:600;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+  display:inline-flex;align-items:center;gap:12px;
+}
+.eyebrow::before,.eyebrow::after{content:'';display:block;width:24px;height:1px;background:var(--gold);opacity:.5}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:20px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .4s var(--smooth);
+}
+nav.scrolled{
+  background:rgba(8,8,8,.9);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(212,175,55,.08);
+  padding:14px 48px;
+}
+.nav-logo img{height:36px;width:auto}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none}
+.nav-links a{font-size:13px;font-weight:400;color:rgba(255,255,255,.55);transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-cta{
+  font-size:13px;font-weight:500;letter-spacing:.05em;
+  color:var(--gold);border:1px solid rgba(212,175,55,.3);
+  padding:10px 24px;border-radius:100px;
+  transition:all .25s var(--smooth);white-space:nowrap;
+}
+.nav-cta:hover{background:var(--gold);color:var(--black);border-color:var(--gold)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:4px;cursor:pointer}
+.hamburger span{display:block;width:22px;height:1.5px;background:#fff;transition:all .3s}
+
+/* ── HERO ── */
+#hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;background:var(--black);
+  padding:120px 24px 80px;
+}
+#particle-canvas{position:absolute;inset:0;z-index:0;opacity:.55;pointer-events:none}
+.glow-blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+.gb-gold-top{width:600px;height:500px;background:radial-gradient(circle,rgba(212,175,55,.1) 0%,transparent 70%);top:-120px;left:50%;transform:translateX(-50%);animation:gbPulse 8s ease-in-out infinite}
+.gb-blue-bot{width:700px;height:400px;background:radial-gradient(circle,rgba(0,51,153,.15) 0%,transparent 70%);bottom:80px;left:50%;transform:translateX(-50%);animation:gbPulse 11s ease-in-out infinite reverse}
+.gb-blue-l{width:300px;height:300px;background:radial-gradient(circle,rgba(26,77,184,.1) 0%,transparent 70%);top:30%;left:-60px;animation:gbFloat 12s ease-in-out infinite}
+.gb-gold-r{width:280px;height:280px;background:radial-gradient(circle,rgba(212,175,55,.07) 0%,transparent 70%);top:40%;right:-40px;animation:gbFloat 9s ease-in-out infinite reverse}
+@keyframes gbPulse{0%,100%{opacity:1;transform:translateX(-50%) scale(1)}50%{opacity:.6;transform:translateX(-50%) scale(1.1)}}
+@keyframes gbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px)}}
+.hero-grid{
+  position:absolute;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(212,175,55,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,.025) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);
+}
+.hero-content{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  max-width:920px;width:100%;
+}
+.logo-wrap{
+  position:relative;margin-bottom:52px;will-change:transform;
+  transition:opacity .3s ease;
+}
+.logo-wrap::before{
+  content:'';position:absolute;inset:-50px;
+  background:radial-gradient(ellipse 55% 55% at 50% 50%,rgba(212,175,55,.09) 0%,transparent 70%);
+  border-radius:50%;animation:logoGlow 5s ease-in-out infinite;
+}
+@keyframes logoGlow{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+.hero-logo{
+  width:min(320px,78vw);height:auto;position:relative;z-index:1;
+  filter:drop-shadow(0 0 28px rgba(212,175,55,.18)) drop-shadow(0 0 56px rgba(0,51,153,.18));
+  animation:logoEntry 1.4s var(--ease) forwards;opacity:0;transform:translateY(28px) scale(.96);
+}
+@keyframes logoEntry{to{opacity:1;transform:translateY(0) scale(1)}}
+.logo-line{
+  width:100%;height:1px;margin-top:10px;
+  background:linear-gradient(90deg,transparent,rgba(212,175,55,.28),rgba(0,51,153,.28),transparent);
+  animation:lineIn 2s var(--ease) .6s forwards;opacity:0;
+}
+@keyframes lineIn{to{opacity:1}}
+.hero-h1{
+  font-family:var(--f-serif);font-size:clamp(34px,5.5vw,70px);
+  font-weight:400;line-height:1.1;letter-spacing:-.02em;
+  color:#fff;margin-bottom:16px;
+  animation:fadeUp 1s var(--ease) .3s forwards;opacity:0;transform:translateY(20px);
+}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-family:var(--f-serif);font-size:clamp(19px,2.8vw,30px);
+  font-weight:300;letter-spacing:.06em;color:var(--gold);
+  margin-bottom:22px;
+  animation:fadeUp 1s var(--ease) .46s forwards;opacity:0;transform:translateY(20px);
+}
+.hero-body{
+  font-size:clamp(14px,1.7vw,16px);font-weight:300;line-height:1.8;
+  color:rgba(255,255,255,.48);max-width:540px;margin-bottom:48px;
+  animation:fadeUp 1s var(--ease) .62s forwards;opacity:0;transform:translateY(20px);
+}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.hero-ctas{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;
+  margin-bottom:60px;
+  animation:fadeUp 1s var(--ease) .78s forwards;opacity:0;transform:translateY(20px);
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 34px;
+  background:linear-gradient(135deg,var(--gold) 0%,var(--gold-dark) 100%);
+  color:var(--black);font-size:12px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;border-radius:100px;
+  transition:all .3s var(--spring);
+  box-shadow:0 4px 20px rgba(212,175,55,.28);
+  position:relative;overflow:hidden;
+}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 55%);opacity:0;transition:opacity .3s}
+.btn-primary:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 10px 36px rgba(212,175,55,.42)}
+.btn-primary:hover::after{opacity:1}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 34px;background:transparent;color:#fff;
+  font-size:12px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;
+  border-radius:100px;border:1px solid rgba(255,255,255,.14);
+  transition:all .3s var(--smooth);backdrop-filter:blur(8px);
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,.32);background:rgba(255,255,255,.05);transform:translateY(-1px)}
+.trust-row{
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;justify-content:center;
+  animation:fadeUp 1s var(--ease) .94s forwards;opacity:0;transform:translateY(18px);
+}
+.trust-item{display:flex;flex-direction:column;align-items:center;gap:3px}
+.trust-label{font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.trust-val{font-size:11.5px;color:rgba(255,255,255,.5);letter-spacing:.02em}
+.trust-sep{width:1px;height:30px;background:rgba(255,255,255,.1)}
+.scroll-hint{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  z-index:2;display:flex;flex-direction:column;align-items:center;gap:7px;
+  animation:fadeUp 1s var(--ease) 1.3s forwards;opacity:0;
+}
+.scroll-hint span{font-size:8.5px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.25)}
+.scroll-mouse{width:20px;height:32px;border:1px solid rgba(255,255,255,.18);border-radius:10px;position:relative}
+.scroll-mouse::after{content:'';position:absolute;top:5px;left:50%;transform:translateX(-50%);width:2px;height:5px;background:var(--gold);border-radius:1px;animation:scrollDot 2s ease-in-out infinite}
+@keyframes scrollDot{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(9px)}}
+
+/* ── WAVE ── */
+.wave-wrap{position:relative;background:var(--black);height:110px;overflow:hidden;margin-bottom:-1px}
+.wave-wrap svg{position:absolute;bottom:0;left:0;width:100%;height:100%}
+
+/* ── SECTION BASE ── */
+section{position:relative}
+.inner{max-width:1200px;margin:0 auto;padding:0 48px}
+.s-head{text-align:center;margin-bottom:72px}
+.s-head .eyebrow{margin-bottom:18px}
+.s-title{font-family:var(--f-serif);font-size:clamp(30px,3.8vw,54px);font-weight:400;line-height:1.1;letter-spacing:-.02em}
+.s-title-dark{color:var(--navy)}
+.s-title-light{color:#fff}
+
+/* ── WHY ── */
+#why{background:var(--cream);padding:100px 0 116px}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.why-card{
+  background:#fff;border-radius:var(--r-xl);padding:46px 38px;
+  box-shadow:0 4px 24px rgba(0,0,0,.09);
+  border:1px solid rgba(0,0,0,.04);
+  position:relative;overflow:hidden;
+  transition:all .4s var(--ease);
+}
+.why-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0;transition:opacity .4s;
+}
+.why-card:hover{transform:translateY(-8px);box-shadow:0 20px 60px rgba(0,0,0,.14)}
+.why-card:hover::before{opacity:1}
+.w-icon{
+  width:50px;height:50px;
+  background:linear-gradient(135deg,rgba(212,175,55,.1),rgba(212,175,55,.04));
+  border:1px solid rgba(212,175,55,.2);border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;margin-bottom:26px;
+}
+.w-icon svg{width:22px;height:22px;color:var(--gold)}
+.why-card h3{font-family:var(--f-serif);font-size:25px;font-weight:500;color:var(--navy);margin-bottom:12px;letter-spacing:-.01em}
+.why-card p{font-size:14.5px;line-height:1.72;color:rgba(20,30,50,.52);font-weight:300}
+
+/* ── FEATURES ── */
+#features{background:var(--cream-dark);padding:116px 0}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.feat-card{
+  background:#fff;border-radius:var(--r-xl);padding:38px 34px;
+  box-shadow:0 2px 14px rgba(0,0,0,.06);
+  border:1px solid rgba(0,0,0,.04);
+  transition:all .4s var(--ease);position:relative;overflow:hidden;
+}
+.feat-card:hover{transform:translateY(-6px);box-shadow:0 20px 56px rgba(0,0,0,.11)}
+.f-icon{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,rgba(212,175,55,.1),transparent);
+  border:1px solid rgba(212,175,55,.18);border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+}
+.f-icon svg{width:19px;height:19px;color:var(--gold-dark)}
+.feat-card h3{font-family:var(--f-serif);font-size:21px;font-weight:500;color:var(--navy);margin-bottom:9px}
+.feat-card>p{font-size:13.5px;line-height:1.72;color:rgba(20,30,50,.5);font-weight:300}
+.feat-wide{grid-column:span 2}
+.feat-stat-col{display:flex;flex-direction:column}
+
+/* mini dashboard */
+.mini-db{margin-top:22px;background:#F8F9FB;border-radius:var(--r-md);padding:14px;border:1px solid rgba(0,0,0,.06)}
+.db-row{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-radius:var(--r-sm);transition:background .2s}
+.db-row:hover{background:rgba(0,0,0,.025)}
+.db-row+.db-row{border-top:1px solid rgba(0,0,0,.05)}
+.db-l{display:flex;align-items:center;gap:9px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-b{background:var(--royal-light)}
+.dot-g{background:#22C55E}
+.dot-o{background:var(--gold)}
+.db-title{font-size:11.5px;font-weight:500;color:#1a1a2e}
+.db-sub{font-size:9.5px;color:rgba(26,26,46,.42);margin-top:1px}
+.badge{font-size:8.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:100px}
+.b-new{background:rgba(0,51,153,.09);color:var(--royal)}
+.b-ok{background:rgba(34,197,94,.1);color:#16A34A}
+.b-shared{background:rgba(212,175,55,.12);color:var(--gold-dark)}
+
+/* stat bars */
+.stat-rows{margin-top:22px;display:flex;flex-direction:column;gap:15px;flex:1}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding-bottom:13px;border-bottom:1px solid rgba(0,0,0,.06)}
+.stat-row:last-child{border-bottom:none;padding-bottom:0}
+.stat-lbl{font-size:11.5px;color:rgba(20,30,50,.5);font-weight:300}
+.stat-num{font-family:var(--f-serif);font-size:22px;font-weight:600;color:var(--navy)}
+.stat-bar{height:3px;background:rgba(0,0,0,.06);border-radius:2px;margin-top:5px;overflow:hidden}
+.stat-fill{height:100%;border-radius:2px;transition:width 1.6s var(--ease)}
+
+/* ── PREMIUM ── */
+#premium{
+  background:linear-gradient(155deg,var(--navy) 0%,#0a1628 58%,var(--black) 100%);
+  padding:116px 0;position:relative;overflow:hidden;
+}
+#premium::before{
+  content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
+  width:900px;height:450px;
+  background:radial-gradient(ellipse,rgba(212,175,55,.055) 0%,transparent 70%);
+  pointer-events:none;
+}
+.prem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.prem-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.038) 0%,rgba(255,255,255,.008) 100%);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(212,175,55,.09);border-radius:var(--r-xl);
+  padding:42px 34px;
+  transition:all .4s var(--ease);position:relative;overflow:hidden;
+}
+.prem-card::after{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(212,175,55,.038) 0%,transparent 50%);opacity:0;transition:opacity .4s}
+.prem-card:hover{border-color:rgba(212,175,55,.22);transform:translateY(-6px);box-shadow:0 24px 64px rgba(0,0,0,.42),0 0 40px rgba(212,175,55,.055)}
+.prem-card:hover::after{opacity:1}
+.p-icon{
+  width:50px;height:50px;
+  background:linear-gradient(135deg,rgba(212,175,55,.14),rgba(212,175,55,.04));
+  border:1px solid rgba(212,175,55,.18);border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;margin-bottom:26px;
+}
+.p-icon svg{width:22px;height:22px;color:var(--gold)}
+.prem-card h3{font-family:var(--f-serif);font-size:23px;font-weight:400;color:#fff;margin-bottom:13px}
+.prem-card p{font-size:13.5px;line-height:1.78;color:rgba(255,255,255,.42);font-weight:300}
+
+/* ── PRICING ── */
+#pricing{background:var(--cream);padding:116px 0}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.price-card{
+  background:#fff;border-radius:var(--r-xl);padding:42px 34px 38px;
+  border:1px solid rgba(0,0,0,.05);
+  box-shadow:0 4px 22px rgba(0,0,0,.08);
+  transition:all .4s var(--ease);position:relative;
+}
+.price-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.16)}
+.price-card-feat{
+  background:linear-gradient(155deg,var(--navy) 0%,#0a1628 100%);
+  border-color:rgba(212,175,55,.18);
+  transform:scale(1.04);
+  box-shadow:0 28px 80px rgba(0,0,0,.28),0 0 0 1px rgba(212,175,55,.14);
+}
+.price-card-feat:hover{transform:scale(1.04) translateY(-6px)}
+.plan-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  padding:4px 13px;border-radius:100px;margin-bottom:26px;
+}
+.pb-rec{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black)}
+.pb-std{background:rgba(0,0,0,.06);color:rgba(20,30,50,.48)}
+.pb-pro{background:rgba(0,51,153,.09);color:var(--royal)}
+.plan-name{font-family:var(--f-serif);font-size:30px;font-weight:500;margin-bottom:8px}
+.plan-name-d{color:var(--navy)}
+.plan-name-l{color:#fff}
+.plan-desc{font-size:12.5px;line-height:1.65;margin-bottom:30px;font-weight:300}
+.plan-desc-d{color:rgba(20,30,50,.48)}
+.plan-desc-l{color:rgba(255,255,255,.48)}
+.plan-hr{height:1px;margin-bottom:26px}
+.plan-hr-d{background:rgba(0,0,0,.07)}
+.plan-hr-l{background:rgba(255,255,255,.08)}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:13px;margin-bottom:34px}
+.plan-feat{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;font-weight:300;line-height:1.55}
+.pf-d{color:rgba(20,30,50,.62)}
+.pf-l{color:rgba(255,255,255,.58)}
+.ci{width:15px;height:15px;flex-shrink:0;margin-top:1px}
+.ci-g{color:var(--gold)}
+.ci-b{color:var(--royal)}
+.plan-btn{
+  width:100%;display:flex;align-items:center;justify-content:center;
+  padding:13px;border-radius:100px;
+  font-size:11.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  transition:all .3s var(--smooth);
+}
+.pb-outline{border:1px solid rgba(0,0,0,.12);color:var(--navy);background:transparent}
+.pb-outline:hover{border-color:var(--navy);background:rgba(13,27,42,.04)}
+.pb-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--black);box-shadow:0 4px 20px rgba(212,175,55,.32)}
+.pb-gold:hover{box-shadow:0 10px 34px rgba(212,175,55,.5);transform:translateY(-1px)}
+
+/* ── EARLY ACCESS ── */
+#early{
+  background:var(--black);padding:136px 24px;
+  text-align:center;position:relative;overflow:hidden;
+}
+#early::before{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:500px;
+  background:radial-gradient(ellipse,rgba(212,175,55,.065) 0%,transparent 68%);
+  pointer-events:none;
+}
+#early::after{
+  content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:900px;height:600px;
+  background:radial-gradient(ellipse,rgba(0,51,153,.07) 0%,transparent 68%);
+  pointer-events:none;
+}
+.early-in{position:relative;z-index:1;max-width:660px;margin:0 auto}
+.early-in .eyebrow{margin-bottom:22px}
+.early-h{font-family:var(--f-serif);font-size:clamp(38px,6vw,74px);font-weight:400;line-height:1.06;letter-spacing:-.03em;color:#fff;margin-bottom:22px}
+.early-h em{font-style:italic;color:var(--gold)}
+.early-body{font-size:15.5px;font-weight:300;line-height:1.78;color:rgba(255,255,255,.42);margin-bottom:14px}
+.early-loc{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);opacity:.72;margin-bottom:46px}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--black);
+  border-top:1px solid rgba(255,255,255,.055);
+  padding:62px 48px 38px;
+}
+.foot-in{max-width:1200px;margin:0 auto}
+.foot-top{display:flex;justify-content:space-between;align-items:flex-start;gap:48px;margin-bottom:54px}
+.foot-brand{max-width:270px}
+.foot-logo{height:46px;width:auto;margin-bottom:18px}
+.foot-bname{font-family:var(--f-serif);font-size:17px;color:#fff;margin-bottom:5px}
+.foot-tag{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:.65;margin-bottom:11px}
+.foot-desc{font-size:12.5px;line-height:1.72;color:rgba(255,255,255,.28);font-weight:300}
+.foot-nav{display:grid;grid-template-columns:repeat(2,1fr);gap:48px}
+.foot-nav-grp h4{font-size:9.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:18px}
+.foot-nav-grp ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.foot-nav-grp a{font-size:12.5px;color:rgba(255,255,255,.42);transition:color .2s;font-weight:300}
+.foot-nav-grp a:hover{color:#fff}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:30px;border-top:1px solid rgba(255,255,255,.05);gap:14px;flex-wrap:wrap}
+.foot-copy{font-size:11.5px;color:rgba(255,255,255,.2);font-weight:300}
+.foot-legal{display:flex;gap:22px}
+.foot-legal a{font-size:11.5px;color:rgba(255,255,255,.2);transition:color .2s}
+.foot-legal a:hover{color:rgba(255,255,255,.5)}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.17s}.d3{transition-delay:.26s}.d4{transition-delay:.35s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .inner{padding:0 30px}
+  .why-grid,.prem-grid{grid-template-columns:repeat(2,1fr)}
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .feat-wide{grid-column:span 2}
+  .price-grid{grid-template-columns:repeat(3,1fr);gap:10px}
+  .price-card-feat{transform:scale(1.02)}
+  .price-card-feat:hover{transform:scale(1.02) translateY(-6px)}
+  .foot-top{flex-direction:column}
+}
+@media(max-width:768px){
+  nav{padding:16px 22px}
+  nav.scrolled{padding:12px 22px}
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .inner{padding:0 18px}
+  #why,#features,#premium,#pricing{padding:72px 0}
+  .why-grid,.prem-grid,.feat-grid,.price-grid{grid-template-columns:1fr}
+  .feat-wide{grid-column:span 1}
+  .price-card-feat{transform:scale(1)}
+  .price-card-feat:hover{transform:translateY(-6px)}
+  .trust-sep{display:none}
+  .trust-row{gap:18px}
+  footer{padding:44px 22px 30px}
+  .foot-nav{grid-template-columns:repeat(2,1fr);gap:28px}
+  .foot-bot{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:480px){
+  .hero-ctas{flex-direction:column;width:100%}
+  .btn-primary,.btn-ghost{width:100%;justify-content:center}
+  .foot-nav{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">
+    <img src="https://storage.googleapis.com/crm-conversations-ai-production/ask-ai-attachments/clkZgHYbEBg4KLiVVh2T/CL3yYwyjGdpv7lVr1zzy/18544481-19a5-4975-9b4b-c31009caf2c0.png" alt="Remote Rentals">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#why">Features</a></li>
+    <li><a href="#features">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#early">Contact</a></li>
+  </ul>
+  <a href="https://forms.fillout.com/t/remote-rentals" target="_blank" rel="noopener" class="nav-cta">Join Early Access</a>
+  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-grid"></div>
+  <div class="glow-blob gb-gold-top"></div>
+  <div class="glow-blob gb-blue-bot"></div>
+  <div class="glow-blob gb-blue-l"></div>
+  <div class="glow-blob gb-gold-r"></div>
+  <div class="hero-content">
+    <div class="logo-wrap" id="logoWrap">
+      <img src="https://storage.googleapis.com/crm-conversations-ai-production/ask-ai-attachments/clkZgHYbEBg4KLiVVh2T/CL3yYwyjGdpv7lVr1zzy/18544481-19a5-4975-9b4b-c31009caf2c0.png" alt="Remote Rentals" class="hero-logo">
+      <div class="logo-line"></div>
+    </div>
+    <h1 class="hero-h1">Remote Rental Management,<br><em>Made Simple.</em></h1>
+    <p class="hero-sub">Stop Managing. Start Living.</p>
+    <p class="hero-body">Track rent payments, send tenant reminders, manage maintenance requests, and stay in control of your properties from anywhere.</p>
+    <div class="hero-ctas">
+      <a href="https://forms.fillout.com/t/remote-rentals" target="_blank" rel="noopener" class="btn-primary">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Join Early Access
+      </a>
+      <a href="#features" class="btn-ghost">Explore Features</a>
+    </div>
+    <div class="trust-row">
+      <div class="trust-item"><span class="trust-label">Visibility</span><span class="trust-val">Real-Time Property Activity</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-label">Verified</span><span class="trust-val">Photos &amp; Timestamped Updates</span></div>
+      <div class="trust-sep"></div>
+      <div class="trust-item"><span class="trust-label">Cyprus</span><span class="trust-val">Built For Modern Landlords</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-mouse"></div><span>Scroll</span></div>
+</section>
+
+<!-- WAVE -->
+<div class="wave-wrap">
+  <svg viewBox="0 0 1440 110" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 C360,110 720,0 1080,80 C1260,110 1380,60 1440,40 L1440,110 L0,110 Z" fill="#F5F0E8"/>
+  </svg>
+</div>
+
+<!-- WHY -->
+<section id="why">
+  <div class="inner">
+    <div class="s-head reveal">
+      <div class="eyebrow">Why Remote Rentals</div>
+      <h2 class="s-title s-title-dark" style="margin-top:18px">Why Remote Rentals?</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal d1">
+        <div class="w-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+        <h3>Complete Visibility</h3>
+        <p>Know what's happening at your property from anywhere. Real-time updates give you full awareness without the constant calls.</p>
+      </div>
+      <div class="why-card reveal d2">
+        <div class="w-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>Verified Activity</h3>
+        <p>Photos, timestamps, and service records provide complete transparency. Every action is documented and verified automatically.</p>
+      </div>
+      <div class="why-card reveal d3">
+        <div class="w-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9,22 9,12 15,12 15,22"/></svg></div>
+        <h3>Peace of Mind</h3>
+        <p>Stay informed without being involved in every detail. Remote Rentals handles the day-to-day so you don't have to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="inner">
+    <div class="s-head reveal">
+      <div class="eyebrow">Core Features</div>
+      <h2 class="s-title s-title-dark" style="margin-top:18px">Everything you need to manage<br>your rental property.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal d1">
+        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <h3>Rent Tracking</h3>
+        <p>See every payment the moment it lands, with a clear history for each unit. No spreadsheets, no chasing.</p>
+      </div>
+      <div class="feat-card reveal d2">
+        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+        <h3>Automated Reminders</h3>
+        <p>Tenants are nudged automatically before rent is due — no awkward follow-ups, no uncomfortable conversations.</p>
+      </div>
+      <div class="feat-card reveal d3">
+        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3>Maintenance Requests</h3>
+        <p>Issues are logged, assigned, and tracked from first report to resolution. Nothing slips through the cracks.</p>
+      </div>
+      <div class="feat-card feat-wide reveal">
+        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h3>Tenant Portal</h3>
+        <p>Tenants submit requests, upload photos and videos, access documents, upload proof of payment, and stay informed — all in one place.</p>
+        <div class="mini-db">
+          <div class="db-row">
+            <div class="db-l"><div class="dot dot-b"></div><div><div class="db-title">Maintenance — photo uploaded</div><div class="db-sub">2 minutes ago</div></div></div>
+            <span class="badge b-new">New</span>
+          </div>
+          <div class="db-row">
+            <div class="db-l"><div class="dot dot-g"></div><div><div class="db-title">Rent — proof of payment</div><div class="db-sub">Today, 09:14</div></div></div>
+            <span class="badge b-ok">Verified</span>
+          </div>
+          <div class="db-row">
+            <div class="db-l"><div class="dot dot-o"></div><div><div class="db-title">Tenancy agreement.pdf</div><div class="db-sub">Uploaded by landlord</div></div></div>
+            <span class="badge b-shared">Shared</span>
+          </div>
+        </div>
+      </div>
+      <div class="feat-card reveal d1">
+        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+        <h3>Document Storage</h3>
+        <p>Leases, certificates, receipts, and property records — organised, secure, and accessible anytime from any device.</p>
+      </div>
+      <div class="feat-card feat-stat-col reveal d2">
+        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg></div>
+        <h3>Monthly Reports</h3>
+        <p>A clear summary of income, costs, and activity, delivered to your inbox every month.</p>
+        <div class="stat-rows">
+          <div class="stat-row"><div><div class="stat-lbl">Rent Collected</div><div class="stat-bar"><div class="stat-fill" data-w="98" style="width:0%;background:linear-gradient(90deg,#B8960C,#D4AF37)"></div></div></div><div class="stat-num">98%</div></div>
+          <div class="stat-row"><div><div class="stat-lbl">Open Maintenance Items</div><div class="stat-bar"><div class="stat-fill" data-w="20" style="width:0%;background:linear-gradient(90deg,#003399,#1a4db8)"></div></div></div><div class="stat-num">2</div></div>
+          <div class="stat-row"><div><div class="stat-lbl">Documents Added</div><div class="stat-bar"><div class="stat-fill" data-w="50" style="width:0%;background:linear-gradient(90deg,#D4AF37,#E8CC6A)"></div></div></div><div class="stat-num">5</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREMIUM -->
+<section id="premium">
+  <div class="inner">
+    <div class="s-head reveal">
+      <div class="eyebrow">Premium Features</div>
+      <h2 class="s-title s-title-light" style="margin-top:18px">Greater visibility and protection<br>for your property.</h2>
+    </div>
+    <div class="prem-grid">
+      <div class="prem-card reveal d1">
+        <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>
+        <h3>Verified Service Updates</h3>
+        <p>Know exactly when work was completed with photos, timestamps, and detailed reports. Full transparency on every service call.</p>
+      </div>
+      <div class="prem-card reveal d2">
+        <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <h3>Inspection Checklists</h3>
+        <p>Document property condition before and after occupancy with photos, videos, timestamps, and digital records. Your protection on record.</p>
+      </div>
+      <div class="prem-card reveal d3">
+        <div class="p-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <h3>Legal AI Companion</h3>
+        <p>Generate tenancy documents and receive AI-powered landlord guidance. Professional-grade legal support, available 24/7.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="inner">
+    <div class="s-head reveal">
+      <h2 class="s-title s-title-dark">Choose the level of support<br>that fits your portfolio.</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card reveal d1">
+        <span class="plan-badge pb-std">Essential</span>
+        <div class="plan-name plan-name-d">Essential</div>
+        <div class="plan-desc plan-desc-d">For landlords who need simple remote visibility over their properties.</div>
+        <div class="plan-hr plan-hr-d"></div>
+        <ul class="plan-feats">
+          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Real-time rent tracking</li>
+          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Maintenance request log</li>
+          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Document storage</li>
+          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Tenant portal access</li>
+        </ul>
+        <a href="https://forms.fillout.com/t/remote-rentals" target="_blank" rel="noopener" class="plan-btn pb-outline">Join Waitlist</a>
+      </div>
+      <div class="price-card price-card-feat reveal">
+        <span class="plan-badge pb-rec">⭑ Recommended</span>
+        <div class="plan-name plan-name-l">Premium</div>
+        <div class="plan-desc plan-desc-l">For landlords who want automation, reminders, reports, and full tenant tools.</div>
+        <div class="plan-hr plan-hr-l"></div>
+        <ul class="plan-feats">
+          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Everything in Essential</li>
+          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Automated rent reminders</li>
+          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Monthly financial reports</li>
+          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Verified service updates</li>
+          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Advanced tenant portal</li>
+        </ul>
+        <a href="https://forms.fillout.com/t/remote-rentals" target="_blank" rel="noopener" class="plan-btn pb-gold">Join Waitlist</a>
+      </div>
+      <div class="price-card reveal d2">
+        <span class="plan-badge pb-pro">Managed Plus</span>
+        <div class="plan-name plan-name-d">Managed Plus</div>
+        <div class="plan-desc plan-desc-d">For owners who want maximum protection, inspections, and AI-powered assistance.</div>
+        <div class="plan-hr plan-hr-d"></div>
+        <ul class="plan-feats">
+          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Everything in Premium</li>
+          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Inspection checklists</li>
+          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Legal AI Companion</li>
+          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Priority support</li>
+          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Dedicated account manager</li>
+        </ul>
+        <a href="https://forms.fillout.com/t/remote-rentals" target="_blank" rel="noopener" class="plan-btn pb-outline">Join Waitlist</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EARLY ACCESS -->
+<section id="early">
+  <div class="early-in">
+    <div class="eyebrow reveal">Early Access</div>
+    <h2 class="early-h reveal" style="margin-top:22px">Be First Through<br><em>The Door.</em></h2>
+    <p class="early-body reveal">Remote Rentals is currently being developed for landlords and property managers who want greater visibility, transparency, and control over their properties.</p>
+    <p class="early-loc reveal">Launching first in Cyprus</p>
+    <a href="https://forms.fillout.com/t/remote-rentals" target="_blank" rel="noopener" class="btn-primary reveal">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Join Early Access
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-in">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <img src="https://storage.googleapis.com/crm-conversations-ai-production/ask-ai-attachments/clkZgHYbEBg4KLiVVh2T/CL3yYwyjGdpv7lVr1zzy/18544481-19a5-4975-9b4b-c31009caf2c0.png" alt="Remote Rentals" class="foot-logo">
+        <div class="foot-bname">Remote Rentals</div>
+        <div class="foot-tag">Manage From Anywhere.</div>
+        <div class="foot-desc">Built in Cyprus for modern landlords and property managers.</div>
+      </div>
+      <div class="foot-nav">
+        <div class="foot-nav-grp">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#why">How It Works</a></li>
+            <li><a href="#early">Contact</a></li>
+          </ul>
+        </div>
+        <div class="foot-nav-grp">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="https://forms.fillout.com/t/remote-rentals" target="_blank" rel="noopener">Feedback</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-copy">&copy; 2025 Remote Rentals. All rights reserved.</div>
+      <div class="foot-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── PARTICLES ──
+(function(){
+  const c=document.getElementById('particle-canvas');
+  const ctx=c.getContext('2d');
+  let pts=[],mouse={x:-999,y:-999},raf;
+  function resize(){c.width=c.offsetWidth;c.height=c.offsetHeight}
+  function mkPt(){
+    return{
+      x:Math.random()*c.width,y:Math.random()*c.height,
+      vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+      r:Math.random()*1.4+.3,
+      op:Math.random()*.45+.1,
+      ph:Math.random()*Math.PI*2,
+      gold:Math.random()>.55
+    }
+  }
+  function init(){pts=[];const n=Math.min(Math.floor(c.width*c.height/7500),130);for(let i=0;i<n;i++)pts.push(mkPt())}
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.ph+=.014;
+      const op=p.op*(0.68+0.32*Math.sin(p.ph));
+      const dx=mouse.x-p.x,dy=mouse.y-p.y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){const f=(110-d)/110*.0012;p.vx-=dx*f;p.vy-=dy*f}
+      p.vx+=(Math.random()-.5)*.008;p.vy+=(Math.random()-.5)*.008;
+      p.vx*=.992;p.vy*=.992;
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=c.width;if(p.x>c.width)p.x=0;
+      if(p.y<0)p.y=c.height;if(p.y>c.height)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=(p.gold?'rgba(212,175,55,':'rgba(255,255,255,')+op+')';
+      ctx.fill();
+    });
+    raf=requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();init()},{passive:true});
+  window.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;
+  },{passive:true});
+  resize();init();draw();
+})();
+
+// ── NAV SCROLL ──
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+
+// ── LOGO PARALLAX ──
+const lw=document.getElementById('logoWrap');
+const hero=document.getElementById('hero');
+let mouseParallax={x:0,y:0},scrolled=false;
+window.addEventListener('scroll',()=>{
+  const s=scrollY,h=hero.offsetHeight,p=Math.min(s/h,1);
+  if(lw){lw.style.transform=`translateY(${s*.24}px) scale(${1-p*.14})`;lw.style.opacity=Math.max(1-p*.65,.18)}
+  scrolled=s>80;
+},{passive:true});
+hero.addEventListener('mousemove',e=>{
+  if(scrolled)return;
+  const r=hero.getBoundingClientRect();
+  const dx=(e.clientX-r.left-r.width/2)/r.width;
+  const dy=(e.clientY-r.top-r.height/2)/r.height;
+  if(lw){lw.style.transform=`translate(${dx*9}px,${dy*9}px)`;lw.style.transition='transform .15s ease-out'}
+});
+hero.addEventListener('mouseleave',()=>{
+  if(scrolled||!lw)return;
+  lw.style.transform='';lw.style.transition='transform .6s ease';
+});
+
+// ── SCROLL REVEAL ──
+const reveals=document.querySelectorAll('.reveal');
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');ro.unobserve(e.target)}})
+},{threshold:.1,rootMargin:'0px 0px -36px 0px'});
+reveals.forEach(el=>ro.observe(el));
+
+// ── STAT BARS ──
+const fills=document.querySelectorAll('.stat-fill');
+const so=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target;
+      setTimeout(()=>{el.style.width=el.dataset.w+'%'},80);
+      so.unobserve(el);
+    }
+  })
+},{threshold:.5});
+fills.forEach(f=>so.observe(f));
+</script>
+</body>
+</html>
