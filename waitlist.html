@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Remote Rentals — Join Early Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #f5f0e8 0%, #ffffff 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Decorative blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .blob-blue {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(26, 77, 184, 0.1) 0%, transparent 70%);
+      top: 10%;
+      left: -100px;
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .blob-purple {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(147, 51, 234, 0.08) 0%, transparent 70%);
+      bottom: 10%;
+      right: -50px;
+      animation: float 15s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-30px); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .form-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    /* Header */
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #1a4db8;
+      margin-bottom: 12px;
+    }
+
+    .header-title {
+      font-size: 32px;
+      font-weight: 600;
+      color: #0d1b2a;
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+
+    .header-subtitle {
+      font-size: 15px;
+      color: rgba(13, 27, 42, 0.6);
+      line-height: 1.6;
+    }
+
+    .tagline {
+      font-size: 14px;
+      color: #d4af37;
+      font-style: italic;
+      margin-top: 8px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      margin-bottom: 40px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #e8e8e8;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1a4db8 0%, #9333ea 50%, #d4af37 100%);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .step-indicators {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .step-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #e8e8e8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .step-icon.active {
+      background: #1a4db8;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .step-icon.completed {
+      background: #22c55e;
+      color: white;
+    }
+
+    /* Form Sections */
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0d1b2a;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-icon {
+      font-size: 20px;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #0d1b2a;
+      margin-bottom: 8px;
+    }
+
+    .required {
+      color: #ef4444;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s ease;
+      background: white;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #1a4db8;
+      box-shadow: 0 0 0 3px rgba(26, 77, 184, 0.1);
+    }
+
+    /* Checkboxes and Radio Buttons */
+    .checkbox-group,
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checkbox-item,
+    .radio-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .checkbox-item:hover,
+    .radio-item:hover {
+      background: rgba(26, 77, 184, 0.05);
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      cursor: pointer;
+      flex-shrink: 0;
+      accent-color: #1a4db8;
+    }
+
+    .checkbox-label,
+    .radio-label {
+      font-size: 14px;
+      color: #0d1b2a;
+      cursor: pointer;
+      flex: 1;
+      margin: 0;
+    }
+
+    /* Info Box */
+    .info-box {
+      background: #f0f4f8;
+      border-left: 3px solid #1a4db8;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 13px;
+      color: rgba(13, 27, 42, 0.7);
+      line-height: 1.6;
+    }
+
+    .info-box strong {
+      color: #0d1b2a;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    button {
+      padding: 14px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: linear-gradient(135deg, #1a4db8 0%, #003399 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(26, 77, 184, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(26, 77, 184, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #1a4db8;
+      border: 1px solid #1a4db8;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(26, 77, 184, 0.05);
+    }
+
+    .btn-back {
+      background: none;
+      color: #1a4db8;
+      padding: 0;
+      margin-top: 16px;
+      text-decoration: underline;
+      font-size: 13px;
+      text-transform: capitalize;
+    }
+
+    .btn-back:hover {
+      color: #003399;
+    }
+
+    /* Success Screen */
+    .success-screen {
+      display: none;
+      text-align: center;
+    }
+
+    .success-screen.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, rgba(26, 77, 184, 0.2) 0%, rgba(212, 175, 55, 0.2) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      animation: scaleIn 0.5s ease;
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-badge {
+      display: inline-block;
+      background: #fef3c7;
+      color: #d97706;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .success-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #0d1b2a;
+      margin-bottom: 12px;
+    }
+
+    .success-message {
+      font-size: 15px;
+      color: rgba(13, 27, 42, 0.6);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .success-divider {
+      width: 60px;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 24px auto;
+    }
+
+    .success-brand {
+      color: #1a4db8;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .success-tagline {
+      color: #d4af37;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    /* Error Messages */
+    .error-message {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 6px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    input.error,
+    select.error {
+      border-color: #ef4444;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .form-card {
+        padding: 32px 20px;
+      }
+
+      .header-title {
+        font-size: 24px;
+      }
+
+      .step-indicators {
+        gap: 8px;
+      }
+
+      .step-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .blob {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-blue"></div>
+  <div class="blob blob-purple"></div>
+
+  <div class="container">
+    <div class="form-card">
+      <!-- Header -->
+      <div class="form-header">
+        <div class="header-tag">Remote Rentals</div>
+        <h1 class="header-title">Join Early Access</h1>
+        <p class="header-subtitle">Be among the first landlords and property owners to experience a smarter way to manage rentals remotely.</p>
+        <p class="tagline">Stop Managing. Start Living.</p>
+      </div>
+
+      <!-- Progress -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="step-indicators">
+          <div class="step-icon active" data-step="1">👤</div>
+          <div class="step-icon" data-step="2">🏢</div>
+          <div class="step-icon" data-step="3">⚠️</div>
+          <div class="step-icon" data-step="4">✨</div>
+          <div class="step-icon" data-step="5">👑</div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="waitlistForm">
+        <!-- Step 1: Details -->
+        <div class="form-section active" data-step="1">
+          <h2 class="section-title"><span class="section-icon">👤</span> Basic Details</h2>
+          
+          <div class="form-group">
+            <label for="fullName">Full Name <span class="required">*</span></label>
+            <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
+            <div class="error-message" id="fullNameError">Please enter your full name</div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+            <div class="error-message" id="emailError">Please enter a valid email address</div>
+          </div>
+
+          <div class="form-group">
+            <label for="mobile">Mobile Number (optional)</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="+357 99 123456">
+          </div>
+
+          <div class="form-group">
+            <label for="country">Country <span class="required">*</span></label>
+            <select id="country" name="country" required>
+              <option value="">Select country</option>
+              <option value="Cyprus">Cyprus</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Greece">Greece</option>
+              <option value="Germany">Germany</option>
+              <option value="Other">Other</option>
+            </select>
+            <div class="error-message" id="countryError">Please select a country</div>
+          </div>
+        </div>
+
+        <!-- Step 2: Properties -->
+        <div class="form-section" data-step="2">
+          <h2 class="section-title"><span class="section-icon">🏢</span> Property Information</h2>
+          
+          <div class="form-group">
+            <label for="propertyCount">How many properties do you manage? <span class="required">*</span></label>
+            <select id="propertyCount" name="propertyCount" required>
+              <option value="">Select</option>
+              <option value="1">1 Property</option>
+              <option value="2-5">2–5 Properties</option>
+              <option value="6-10">6–10 Properties</option>
+              <option value="11-25">11–25 Properties</option>
+              <option value="25+">25+</option>
+            </select>
+            <div class="error-message" id="propertyCountError">Please select a property count</div>
+          </div>
+
+          <div class="form-group">
+            <label>What type of properties do you manage? <span class="required">*</span></label>
+            <div class="checkbox-group" id="propertyTypes">
+              <div class="checkbox-item">
+                <input type="checkbox" id="apartment" name="propertyTypes" value="Apartment">
+                <label for="apartment" class="checkbox-label">Apartment</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="villa" name="propertyTypes" value="Villa">
+                <label for="villa" class="checkbox-label">Villa</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="holidayRental" name="propertyTypes" value="Holiday Rental">
+                <label for="holidayRental" class="checkbox-label">Holiday Rental</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="longTermRental" name="propertyTypes" value="Long-Term Rental">
+                <label for="longTermRental" class="checkbox-label">Long-Term Rental</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="commercial" name="propertyTypes" value="Commercial Property">
+                <label for="commercial" class="checkbox-label">Commercial Property</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="mixedPortfolio" name="propertyTypes" value="Mixed Portfolio">
+                <label for="mixedPortfolio" class="checkbox-label">Mixed Portfolio</label>
+              </div>
+            </div>
+            <div class="error-message" id="propertyTypesError">Please select at least one property type</div>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Where are your properties located? (optional)</label>
+            <input type="text" id="location" name="location" placeholder="e.g. Limassol, Paphos">
+          </div>
+        </div>
+
+        <!-- Step 3: Challenges -->
+        <div class="form-section" data-step="3">
+          <h2 class="section-title"><span class="section-icon">⚠️</span> Current Challenges</h2>
+          
+          <div class="form-group">
+            <label>What is your biggest property management challenge today? <span class="required">*</span></label>
+            <div class="checkbox-group" id="challenges">
+              <div class="checkbox-item">
+                <input type="checkbox" id="rentTracking" name="challenges" value="Tracking rent payments">
+                <label for="rentTracking" class="checkbox-label">Tracking rent payments</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="tenantComm" name="challenges" value="Tenant communication">
+                <label for="tenantComm" class="checkbox-label">Tenant communication</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="maintenance" name="challenges" value="Maintenance requests">
+                <label for="maintenance" class="checkbox-label">Maintenance requests</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="inspections" name="challenges" value="Property inspections">
+                <label for="inspections" class="checkbox-label">Property inspections</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="multiProperty" name="challenges" value="Managing multiple properties">
+                <label for="multiProperty" class="checkbox-label">Managing multiple properties</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="visibility" name="challenges" value="Lack of visibility when abroad">
+                <label for="visibility" class="checkbox-label">Lack of visibility when abroad</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="serviceProviders" name="challenges" value="Finding reliable service providers">
+                <label for="serviceProviders" class="checkbox-label">Finding reliable service providers</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="challengesOther" name="challenges" value="Other">
+                <label for="challengesOther" class="checkbox-label">Other</label>
+              </div>
+            </div>
+            <div class="error-message" id="challengesError">Please select at least one challenge</div>
+          </div>
+        </div>
+
+        <!-- Step 4: Features -->
+        <div class="form-section" data-step="4">
+          <h2 class="section-title"><span class="section-icon">✨</span> Interest Level</h2>
+          
+          <div class="form-group">
+            <label>Which features interest you most? <span class="required">*</span></label>
+            <div class="checkbox-group" id="features">
+              <div class="checkbox-item">
+                <input type="checkbox" id="selectAll" name="selectAll">
+                <label for="selectAll" class="checkbox-label"><strong>Select All</strong></label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="rentTracking2" name="features" value="Rent Tracking">
+                <label for="rentTracking2" class="checkbox-label">Rent Tracking</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="reminders" name="features" value="Automated Reminders">
+                <label for="reminders" class="checkbox-label">Automated Reminders</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="tenantPortal" name="features" value="Tenant Portal">
+                <label for="tenantPortal" class="checkbox-label">Tenant Portal</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="maintenanceReq" name="features" value="Maintenance Requests">
+                <label for="maintenanceReq" class="checkbox-label">Maintenance Requests</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="inspectionReports" name="features" value="Inspection Reports">
+                <label for="inspectionReports" class="checkbox-label">Inspection Reports</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="verifiedPhotos" name="features" value="Verified Photo Updates">
+                <label for="verifiedPhotos" class="checkbox-label">Verified Photo Updates</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="analytics" name="features" value="Property Analytics">
+                <label for="analytics" class="checkbox-label">Property Analytics</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="legalAI" name="features" value="Legal AI Assistant">
+                <label for="legalAI" class="checkbox-label">Legal AI Assistant</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="dashboard" name="features" value="Multi-Property Dashboard">
+                <label for="dashboard" class="checkbox-label">Multi-Property Dashboard</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="featuresOther" name="features" value="Other">
+                <label for="featuresOther" class="checkbox-label">Other</label>
+              </div>
+            </div>
+            <div class="error-message" id="featuresError">Please select at least one feature</div>
+          </div>
+        </div>
+
+        <!-- Step 5: Access -->
+        <div class="form-section" data-step="5">
+          <h2 class="section-title"><span class="section-icon">👑</span> Early Access</h2>
+          
+          <div class="form-group">
+            <label>How would you like to participate? <span class="required">*</span></label>
+            <div class="radio-group" id="participation">
+              <div class="radio-item">
+                <input type="radio" id="freeWaitlist" name="participation" value="Join the free waitlist and keep me updated" required>
+                <label for="freeWaitlist" class="radio-label">Join the free waitlist and keep me updated</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="priorityAccess" name="participation" value="I'd like priority access before public launch">
+                <label for="priorityAccess" class="radio-label">I'd like priority access before public launch</label>
+              </div>
+              <div class="radio-item">
+                <input type="radio" id="deposit" name="participation" value="I'd be willing to reserve my place with a refundable €20 deposit">
+                <label for="deposit" class="radio-label">I'd be willing to reserve my place with a refundable €20 deposit</label>
+              </div>
+            </div>
+            <div class="error-message" id="participationError">Please select a participation option</div>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-item">
+              <input type="checkbox" id="updates" name="updates" required>
+              <label for="updates" class="checkbox-label">I agree to receive product updates and launch announcements from Remote Rentals. <span class="required">*</span></label>
+            </div>
+            <div class="error-message" id="updatesError">Please agree to receive updates</div>
+          </div>
+        </div>
+
+        <!-- Success Screen -->
+        <div class="success-screen" id="successScreen">
+          <div class="success-icon">✓</div>
+          <div class="success-badge">🎉 You're in!</div>
+          <h2 class="success-title">Thank You</h2>
+          <p class="success-message">You're officially on the list. We'll keep you updated as we build the future of remote property management.</p>
+          <div class="success-divider"></div>
+          <div class="success-brand">REMOTE RENTALS</div>
+          <div class="success-tagline">Stop Managing. Start Living.</div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group" id="buttonGroup">
+          <button type="button" class="btn-secondary" id="backBtn" style="display: none;">← Back</button>
+          <button type="button" class="btn-primary" id="continueBtn">Continue</button>
+        </div>
+        <button type="button" class="btn-back" id="backLinkBtn" style="display: none;">← Back</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('waitlistForm');
+    const continueBtn = document.getElementById('continueBtn');
+    const backBtn = document.getElementById('backBtn');
+    const backLinkBtn = document.getElementById('backLinkBtn');
+    const progressFill = document.getElementById('progressFill');
+    const successScreen = document.getElementById('successScreen');
+    const buttonGroup = document.getElementById('buttonGroup');
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const featureCheckboxes = document.querySelectorAll('input[name="features"]:not(#selectAll)');
+
+    let currentStep = 1;
+    const totalSteps = 5;
+    const formData = {};
+
+    // Update progress bar
+    function updateProgress() {
+      const progress = (currentStep / totalSteps) * 100;
+      progressFill.style.width = progress + '%';
+
+      // Update step indicators
+      document.querySelectorAll('.step-icon').forEach((icon, index) => {
+        const step = index + 1;
+        icon.classList.remove('active', 'completed');
+        if (step === currentStep) {
+          icon.classList.add('active');
+        } else if (step < currentStep) {
+          icon.classList.add('completed');
+        }
+      });
+
+      // Update button visibility
+      if (currentStep === 1) {
+        backBtn.style.display = 'none';
+        backLinkBtn.style.display = 'none';
+      } else {
+        backBtn.style.display = 'block';
+        backLinkBtn.style.display = 'block';
+      }
+
+      if (currentStep === totalSteps) {
+        continueBtn.textContent = 'Become an Early Access Member';
+      } else {
+        continueBtn.textContent = 'Continue';
+      }
+    }
+
+    // Validate current step
+    function validateStep(step) {
+      const section = document.querySelector(`[data-step="${step}"]`);
+      const inputs = section.querySelectorAll('[required]');
+      let isValid = true;
+
+      inputs.forEach(input => {
+        const errorElement = document.getElementById(input.id + 'Error');
+        
+        if (input.type === 'checkbox' || input.type === 'radio') {
+          const groupName = input.name;
+          const checked = document.querySelector(`input[name="${groupName}"]:checked`);
+          if (!checked) {
+            isValid = false;
+            if (errorElement) {
+              errorElement.classList.add('show');
+              input.classList.add('error');
+            }
+          } else {
+            if (errorElement) {
+              errorElement.classList.remove('show');
+            }
+            input.classList.remove('error');
+          }
+        } else {
+          if (!input.value.trim()) {
+            isValid = false;
+            if (errorElement) {
+              errorElement.classList.add('show');
+              input.classList.add('error');
+            }
+          } else {
+            if (errorElement) {
+              errorElement.classList.remove('show');
+            }
+            input.classList.remove('error');
+          }
+        }
+      });
+
+      // Special validation for property types and challenges
+      if (step === 2) {
+        const propertyTypes = document.querySelectorAll('input[name="propertyTypes"]:checked');
+        if (propertyTypes.length === 0) {
+          isValid = false;
+          document.getElementById('propertyTypesError').classList.add('show');
+        } else {
+          document.getElementById('propertyTypesError').classList.remove('show');
+        }
+      }
+
+      if (step === 3) {
+        const challenges = document.querySelectorAll('input[name="challenges"]:checked');
+        if (challenges.length === 0) {
+          isValid = false;
+          document.getElementById('challengesError').classList.add('show');
+        } else {
+          document.getElementById('challengesError').classList.remove('show');
+        }
+      }
+
+      if (step === 4) {
+        const features = document.querySelectorAll('input[name="features"]:checked:not(#selectAll)');
+        if (features.length === 0) {
+          isValid = false;
+          document.getElementById('featuresError').classList.add('show');
+        } else {
+          document.getElementById('featuresError').classList.remove('show');
+        }
+      }
+
+      return isValid;
+    }
+
+    // Show step
+    function showStep(step) {
+      document.querySelectorAll('.form-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.querySelector(`[data-step="${step}"]`).classList.add('active');
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Show success screen
+    function showSuccess() {
+      form.style.display = 'none';
+      successScreen.classList.add('active');
+      buttonGroup.style.display = 'none';
+      updateProgress();
+    }
+
+    // Continue button
+    continueBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      if (!validateStep(currentStep)) {
+        return;
+      }
+
+      if (currentStep === totalSteps) {
+        // Submit form
+        submitForm();
+      } else {
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+
+    // Back button
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+
+    backLinkBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+
+    // Select All functionality
+    selectAllCheckbox.addEventListener('change', (e) => {
+      featureCheckboxes.forEach(checkbox => {
+        checkbox.checked = e.target.checked;
+      });
+    });
+
+    featureCheckboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', () => {
+        const allChecked = Array.from(featureCheckboxes).every(cb => cb.checked);
+        const someChecked = Array.from(featureCheckboxes).some(cb => cb.checked);
+        selectAllCheckbox.checked = allChecked;
+        selectAllCheckbox.indeterminate = someChecked && !allChecked;
+      });
+    });
+
+    // Submit form
+    function submitForm() {
+      const formDataObj = new FormData(form);
+      const data = {
+        fullName: formDataObj.get('fullName'),
+        email: formDataObj.get('email'),
+        mobile: formDataObj.get('mobile'),
+        country: formDataObj.get('country'),
+        propertyCount: formDataObj.get('propertyCount'),
+        propertyTypes: formDataObj.getAll('propertyTypes'),
+        location: formDataObj.get('location'),
+        challenges: formDataObj.getAll('challenges'),
+        features: formDataObj.getAll('features').filter(f => f !== ''),
+        participation: formDataObj.get('participation'),
+        timestamp: new Date().toISOString()
+      };
+
+      // Save to localStorage (for demo)
+      const submissions = JSON.parse(localStorage.getItem('waitlistSubmissions') || '[]');
+      submissions.push(data);
+      localStorage.setItem('waitlistSubmissions', JSON.stringify(submissions));
+
+      // Send to server (optional)
+      fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).catch(() => {
+        // Silently fail if endpoint doesn't exist
+      });
+
+      showSuccess();
+    }
+
+    // Initialize
+    updateProgress();
+  </script>
+</body>
+</html>
