@@ -299,6 +299,59 @@ section{position:relative}
 .prem-card h3{font-family:var(--f-serif);font-size:23px;font-weight:400;color:#fff;margin-bottom:13px}
 .prem-card p{font-size:13.5px;line-height:1.78;color:rgba(255,255,255,.42);font-weight:300}
 
+/* ── COMING SOON ── */
+#coming-soon{
+  background:linear-gradient(155deg,var(--navy) 0%,#0a1628 58%,var(--black) 100%);
+  padding:116px 0;position:relative;overflow:hidden;
+}
+#coming-soon::before{
+  content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
+  width:900px;height:450px;
+  background:radial-gradient(ellipse,rgba(212,175,55,.055) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cs-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:48px;
+}
+.cs-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.038) 0%,rgba(255,255,255,.008) 100%);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(212,175,55,.09);border-radius:var(--r-xl);
+  padding:42px 34px;
+  transition:all .4s var(--ease);position:relative;overflow:hidden;
+}
+.cs-card::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(212,175,55,.038) 0%,transparent 50%);
+  opacity:0;transition:opacity .4s
+}
+.cs-card:hover{border-color:rgba(212,175,55,.22);transform:translateY(-6px);box-shadow:0 24px 64px rgba(0,0,0,.42),0 0 40px rgba(212,175,55,.055)}
+.cs-card:hover::after{opacity:1}
+.cs-icon{
+  width:50px;height:50px;
+  background:linear-gradient(135deg,rgba(212,175,55,.14),rgba(212,175,55,.04));
+  border:1px solid rgba(212,175,55,.18);border-radius:var(--r-md);
+  display:flex;align-items:center;justify-content:center;margin-bottom:26px;
+}
+.cs-icon svg{width:22px;height:22px;color:var(--gold)}
+.cs-card h3{font-family:var(--f-serif);font-size:23px;font-weight:400;color:#fff;margin-bottom:13px}
+.cs-card p{font-size:13.5px;line-height:1.78;color:rgba(255,255,255,.42);font-weight:300}
+.cs-badge-row{
+  display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  margin-top:48px;padding-top:48px;border-top:1px solid rgba(212,175,55,.1);
+}
+.cs-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:8px 16px;border-radius:100px;
+  background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);
+  color:var(--gold);transition:all .3s var(--smooth);
+}
+.cs-badge:hover{background:rgba(212,175,55,.14);border-color:rgba(212,175,55,.4)}
+.cs-badge::before{
+  content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);
+}
+
 /* ── PRICING ── */
 #pricing{background:var(--cream);padding:116px 0}
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
@@ -407,7 +460,7 @@ footer{
 /* ── RESPONSIVE ── */
 @media(max-width:1024px){
   .inner{padding:0 30px}
-  .why-grid,.prem-grid{grid-template-columns:repeat(2,1fr)}
+  .why-grid,.prem-grid,.cs-grid{grid-template-columns:repeat(2,1fr)}
   .feat-grid{grid-template-columns:repeat(2,1fr)}
   .feat-wide{grid-column:span 2}
   .price-grid{grid-template-columns:repeat(3,1fr);gap:10px}
@@ -421,8 +474,8 @@ footer{
   .nav-links,.nav-cta{display:none}
   .hamburger{display:flex}
   .inner{padding:0 18px}
-  #why,#features,#premium,#pricing{padding:72px 0}
-  .why-grid,.prem-grid,.feat-grid,.price-grid{grid-template-columns:1fr}
+  #why,#features,#premium,#coming-soon,#pricing{padding:72px 0}
+  .why-grid,.prem-grid,.cs-grid,.feat-grid,.price-grid{grid-template-columns:1fr}
   .feat-wide{grid-column:span 1}
   .price-card-feat{transform:scale(1)}
   .price-card-feat:hover{transform:translateY(-6px)}
@@ -604,6 +657,82 @@ footer{
         <h3>Legal AI Companion</h3>
         <p>Generate tenancy documents and receive AI-powered landlord guidance. Professional-grade legal support, available 24/7.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMING SOON -->
+<section id="coming-soon">
+  <div class="inner">
+    <div class="s-head reveal">
+      <div class="eyebrow">Coming Soon</div>
+      <h2 class="s-title s-title-light" style="margin-top:18px">Powerful features<br>launching soon.</h2>
+    </div>
+    <div class="cs-grid">
+      <div class="cs-card reveal d1">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3>Tenant Sourcing & Matching</h3>
+        <p>Finding and screening suitable rental clients to help secure reliable, long-term tenants.</p>
+      </div>
+      <div class="cs-card reveal d2">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h3>Contractor Management</h3>
+        <p>Coordinate trusted contractors, track work progress, and receive verified updates from anywhere.</p>
+      </div>
+      <div class="cs-card reveal d3">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <h3>Pre-Move-In Inspection</h3>
+        <p>Comprehensive property inspections and detailed inventory documentation before a tenancy begins.</p>
+      </div>
+      <div class="cs-card reveal d1">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <h3>Check-Out Inspection</h3>
+        <p>Thorough end-of-tenancy inspections and inventory assessments to identify any changes or damages.</p>
+      </div>
+      <div class="cs-card reveal d2">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <h3>Legal AI Consultant</h3>
+        <p>Generate tenancy-related documents and receive AI-powered guidance on common property matters.</p>
+      </div>
+      <div class="cs-card reveal d3">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2.5"/></svg></div>
+        <h3>Wealth & Tax Planning</h3>
+        <p>Explore opportunities for efficient ownership structures, tax planning considerations, and long-term wealth preservation strategies.</p>
+      </div>
+      <div class="cs-card reveal d1">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <h3>Residency & Relocation</h3>
+        <p>Access information and guidance relating to residency opportunities, relocation considerations, and property ownership in Cyprus.</p>
+      </div>
+      <div class="cs-card reveal d2">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 3v18"/></svg></div>
+        <h3>Accounting & Financial</h3>
+        <p>Keep property finances organised with streamlined reporting and integration with trusted accounting solutions.</p>
+      </div>
+      <div class="cs-card reveal d3">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <h3>Multi-Property Analytics</h3>
+        <p>Monitor performance, occupancy, income, expenses, and activity across multiple properties from a single dashboard.</p>
+      </div>
+      <div class="cs-card reveal d1">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
+        <h3>Service Provider Network</h3>
+        <p>Gardening, Window Cleaning, Pool Care, Housekeeping, Maintenance Services & More.</p>
+      </div>
+      <div class="cs-card reveal d2">
+        <div class="cs-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>End-to-End Support</h3>
+        <p>From tenant placement and inspections to maintenance coordination and reporting, designed to provide complete visibility, control, and peace of mind.</p>
+      </div>
+    </div>
+    <div class="cs-badge-row">
+      <span class="cs-badge">Tenant Sourcing</span>
+      <span class="cs-badge">Contractor Management</span>
+      <span class="cs-badge">Inspections</span>
+      <span class="cs-badge">Legal Documents</span>
+      <span class="cs-badge">Accounting Integration</span>
+      <span class="cs-badge">Tax Planning</span>
+      <span class="cs-badge">Multi-Property Analytics</span>
     </div>
   </div>
 </section>
