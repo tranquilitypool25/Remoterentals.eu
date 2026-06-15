@@ -352,6 +352,74 @@ section{position:relative}
   content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);
 }
 
+/* ── PARTNER RESERVATION ── */
+#partner{
+  background:linear-gradient(155deg,var(--navy) 0%,#0a1628 58%,var(--black) 100%);
+  padding:116px 0;position:relative;overflow:hidden;
+}
+#partner::before{
+  content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
+  width:900px;height:450px;
+  background:radial-gradient(ellipse,rgba(212,175,55,.055) 0%,transparent 70%);
+  pointer-events:none;
+}
+.partner-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.038) 0%,rgba(255,255,255,.008) 100%);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:2px solid rgba(212,175,55,.18);border-radius:var(--r-xl);
+  padding:64px 48px;max-width:700px;margin:0 auto;
+  transition:all .4s var(--ease);position:relative;overflow:hidden;
+}
+.partner-card::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:linear-gradient(135deg,rgba(212,175,55,.038) 0%,transparent 50%);
+  opacity:0;transition:opacity .4s
+}
+.partner-card:hover{border-color:rgba(212,175,55,.35);transform:translateY(-6px);box-shadow:0 24px 64px rgba(0,0,0,.42),0 0 40px rgba(212,175,55,.08)}
+.partner-card:hover::after{opacity:1}
+.partner-badge{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:var(--black);padding:6px 16px;border-radius:100px;
+  font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:24px;
+}
+.partner-headline{
+  font-family:var(--f-serif);font-size:42px;font-weight:500;color:#fff;margin-bottom:32px;line-height:1.2;
+}
+.partner-fee{
+  font-size:18px;color:var(--gold);font-weight:600;margin-bottom:32px;letter-spacing:.05em;
+}
+.partner-fee-amount{
+  font-size:48px;font-weight:700;color:var(--gold);display:block;
+}
+.partner-section-title{
+  font-size:13px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-top:32px;margin-bottom:16px;
+}
+.partner-benefits{
+  list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:32px;
+}
+.partner-benefit{
+  display:flex;align-items:flex-start;gap:12px;font-size:14px;color:rgba(255,255,255,.72);line-height:1.6;
+}
+.partner-benefit::before{
+  content:'✓';display:block;color:var(--gold);font-weight:700;flex-shrink:0;width:20px;
+}
+.partner-support-text{
+  font-size:13px;color:rgba(255,255,255,.52);line-height:1.8;margin-bottom:24px;border-top:1px solid rgba(212,175,55,.1);border-bottom:1px solid rgba(212,175,55,.1);padding:24px 0;
+}
+.partner-cta{
+  width:100%;display:flex;align-items:center;justify-content:center;
+  padding:16px;border-radius:100px;
+  font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--black);
+  transition:all .3s var(--smooth);border:none;cursor:pointer;
+  box-shadow:0 8px 24px rgba(212,175,55,.3);
+}
+.partner-cta:hover{
+  transform:translateY(-2px);box-shadow:0 12px 32px rgba(212,175,55,.4);
+}
+
 /* ── PRICING ── */
 #pricing{background:var(--cream);padding:116px 0}
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
@@ -474,7 +542,7 @@ footer{
   .nav-links,.nav-cta{display:none}
   .hamburger{display:flex}
   .inner{padding:0 18px}
-  #why,#features,#premium,#coming-soon,#pricing{padding:72px 0}
+  #why,#features,#premium,#coming-soon,#partner,#pricing{padding:72px 0}
   .why-grid,.prem-grid,.cs-grid,.feat-grid,.price-grid{grid-template-columns:1fr}
   .feat-wide{grid-column:span 1}
   .price-card-feat{transform:scale(1)}
@@ -785,6 +853,36 @@ footer{
         </ul>
 
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER RESERVATION -->
+<section id="partner">
+  <div class="inner">
+    <div class="partner-card reveal">
+      <div class="partner-badge">Limited Spaces</div>
+      <h2 class="partner-headline">Secure Priority Partner Access</h2>
+      <div class="partner-fee">
+        <span class="partner-fee-amount">€97</span>
+        One-Time Reservation
+      </div>
+      <div class="partner-section-title">Included</div>
+      <ul class="partner-benefits">
+        <li class="partner-benefit">Priority review and onboarding</li>
+        <li class="partner-benefit">One-to-one strategy session with Mikhail (typically valued at €75)</li>
+        <li class="partner-benefit">Opportunity to discuss partnership, investment, and promotional opportunities</li>
+        <li class="partner-benefit">Early access to future platform features</li>
+        <li class="partner-benefit">Priority consideration for Featured Investment Opportunities</li>
+        <li class="partner-benefit">Direct input into future ecosystem development</li>
+        <li class="partner-benefit">Exclusive launch updates and partnership announcements</li>
+      </ul>
+      <div class="partner-support-text">
+        <p style="margin-bottom:12px">The reservation helps ensure we prioritise serious partners and maintain the quality and exclusivity of the platform.</p>
+        <p style="margin-bottom:12px">Future partnership opportunities are expected to start from €149/month, subject to placement, visibility, and partnership requirements.</p>
+        <p>Limited partner spaces available during the launch phase.</p>
+      </div>
+      <a href="/partner-application.html" class="partner-cta">Apply For Priority Partner Access</a>
     </div>
   </div>
 </section>
