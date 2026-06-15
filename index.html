@@ -422,6 +422,115 @@ section{position:relative}
 
 /* ── PRICING ── */
 #pricing{background:var(--cream);padding:116px 0}
+.pricing-subtitle{
+  font-size:15px;color:rgba(13,27,42,.65);line-height:1.8;margin-top:16px;max-width:700px;margin-left:auto;margin-right:auto;
+}
+.price-grid-new{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start;margin:64px 0;
+}
+.price-card-new{
+  background:#fff;border-radius:var(--r-xl);padding:42px 34px 38px;transition:all .4s var(--ease);border:1px solid transparent;
+}
+.price-card-essential,.price-card-premium{
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.price-card-essential:hover,.price-card-premium:hover{
+  transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.08);
+}
+.price-card-featured{
+  transform:scale(1.02);box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+.price-card-signature{
+  background:linear-gradient(135deg,#0D1B2A 0%,#07111e 50%,#0a0a0a 100%);
+  border:1px solid rgba(212,175,55,.2);box-shadow:0 0 40px rgba(212,175,55,.15),0 8px 32px rgba(0,0,0,.3);
+  position:relative;overflow:hidden;
+}
+.price-card-signature::before{
+  content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(212,175,55,.1),transparent 60%);pointer-events:none;
+}
+.price-card-signature:hover{
+  border-color:rgba(212,175,55,.35);box-shadow:0 0 60px rgba(212,175,55,.25),0 12px 48px rgba(0,0,0,.4);transform:translateY(-6px);
+}
+.plan-badge-new{
+  display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:16px;
+}
+.pb-essential{
+  background:rgba(212,175,55,.08);color:var(--navy);border:1px solid rgba(212,175,55,.2);
+}
+.pb-premium{
+  background:rgba(212,175,55,.12);color:var(--navy);border:1px solid rgba(212,175,55,.3);
+}
+.pb-signature{
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--black);
+}
+.plan-name-new{
+  font-family:var(--f-serif);font-size:28px;font-weight:500;color:var(--navy);margin-bottom:8px;
+}
+.price-card-signature .plan-name-new{
+  color:#fff;
+}
+.plan-desc-new{
+  font-size:13px;color:rgba(13,27,42,.65);line-height:1.6;margin-bottom:16px;
+}
+.price-card-signature .plan-desc-new{
+  color:rgba(255,255,255,.7);
+}
+.plan-divider{
+  height:1px;background:rgba(13,27,42,.1);margin:16px 0;
+}
+.price-card-signature .plan-divider{
+  background:rgba(212,175,55,.15);
+}
+.plan-feats-new{
+  list-style:none;display:flex;flex-direction:column;gap:12px;
+}
+.plan-feats-new li{
+  display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(13,27,42,.7);line-height:1.5;
+}
+.price-card-signature .plan-feats-new li{
+  color:rgba(255,255,255,.75);
+}
+.plan-feats-new .ci{
+  width:18px;height:18px;flex-shrink:0;color:var(--gold);stroke:var(--gold);
+}
+.available-anywhere{
+  background:linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,.3));border-radius:var(--r-xl);padding:48px;margin:64px 0;text-align:center;
+}
+.available-anywhere h3{
+  font-family:var(--f-serif);font-size:24px;font-weight:500;color:var(--navy);margin-bottom:32px;
+}
+.device-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+}
+.device-item{
+  display:flex;flex-direction:column;align-items:center;gap:12px;font-size:13px;font-weight:600;color:var(--navy);letter-spacing:.05em;
+}
+.device-item .ci{
+  width:32px;height:32px;color:var(--gold);stroke:var(--gold);
+}
+.white-label-card{
+  background:linear-gradient(135deg,rgba(13,27,42,.03),rgba(212,175,55,.05));border:1px solid rgba(212,175,55,.15);border-radius:var(--r-xl);padding:48px;margin-top:48px;text-align:center;
+}
+.white-label-card h3{
+  font-family:var(--f-serif);font-size:24px;font-weight:500;color:var(--navy);margin-bottom:16px;
+}
+.white-label-card p{
+  font-size:14px;color:rgba(13,27,42,.7);line-height:1.8;margin-bottom:12px;
+}
+.white-label-note{
+  font-size:13px;color:rgba(13,27,42,.55);font-style:italic;margin-bottom:0;
+}
+@media(max-width:1024px){
+  .price-grid-new{grid-template-columns:1fr;gap:32px}
+  .price-card-featured{transform:scale(1)}
+  .device-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .price-grid-new{gap:24px}
+  .available-anywhere{padding:32px}
+  .device-grid{grid-template-columns:1fr}
+  .white-label-card{padding:32px}
+}
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
 .price-card{
   background:#fff;border-radius:var(--r-xl);padding:42px 34px 38px;
@@ -809,50 +918,76 @@ footer{
 <section id="pricing">
   <div class="inner">
     <div class="s-head reveal">
-      <h2 class="s-title s-title-dark">Choose the level of support<br>that fits your portfolio.</h2>
+      <h2 class="s-title s-title-dark">Choose Your Ownership Experience</h2>
+      <p class="pricing-subtitle reveal">Whether you own a single property or manage an expanding portfolio, Remote Rentals provides the visibility, control, and peace of mind to help you stop managing and start living.</p>
     </div>
-    <div class="price-grid">
-      <div class="price-card reveal d1">
-        <span class="plan-badge pb-std">Essential</span>
-        <div class="plan-name plan-name-d">Essential</div>
-        <div class="plan-desc plan-desc-d">For landlords who need simple remote visibility over their properties.</div>
-        <div class="plan-hr plan-hr-d"></div>
-        <ul class="plan-feats">
-          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Real-time rent tracking</li>
-          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Maintenance request log</li>
-          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Document storage</li>
-          <li class="plan-feat pf-d"><svg class="ci ci-b" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Tenant portal access</li>
+    <div class="price-grid-new">
+      <!-- ESSENTIAL -->
+      <div class="price-card-new price-card-essential reveal">
+        <span class="plan-badge-new pb-essential">Essential</span>
+        <div class="plan-name-new">Essential</div>
+        <div class="plan-desc-new">For landlords who need simple remote visibility over their properties.</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-feats-new">
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Real-time rent tracking</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Maintenance request log</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Document storage</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Tenant portal access</li>
         </ul>
-
       </div>
-      <div class="price-card price-card-feat reveal">
-        <span class="plan-badge pb-rec">⭑ Recommended</span>
-        <div class="plan-name plan-name-l">Premium</div>
-        <div class="plan-desc plan-desc-l">For landlords who want automation, reminders, reports, and full tenant tools.</div>
-        <div class="plan-hr plan-hr-l"></div>
-        <ul class="plan-feats">
-          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Everything in Essential</li>
-          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Automated rent reminders</li>
-          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Monthly financial reports</li>
-          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Verified service updates</li>
-          <li class="plan-feat pf-l"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Advanced tenant portal</li>
+
+      <!-- PREMIUM -->
+      <div class="price-card-new price-card-premium price-card-featured reveal">
+        <span class="plan-badge-new pb-premium">⭑ Recommended</span>
+        <div class="plan-name-new">Premium</div>
+        <div class="plan-desc-new">For landlords who want automation, reminders, reports, and full tenant tools.</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-feats-new">
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Everything in Essential</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Automated rent reminders</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Monthly financial reports</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Verified service updates</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Advanced tenant portal</li>
         </ul>
-
       </div>
-      <div class="price-card reveal d2">
-        <span class="plan-badge pb-pro">Managed Plus</span>
-        <div class="plan-name plan-name-d">Managed Plus</div>
-        <div class="plan-desc plan-desc-d">For owners who want maximum protection, inspections, and AI-powered assistance.</div>
-        <div class="plan-hr plan-hr-d"></div>
-        <ul class="plan-feats">
-          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Everything in Premium</li>
-          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Inspection checklists</li>
-          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Legal AI Companion</li>
-          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Priority support</li>
-          <li class="plan-feat pf-d"><svg class="ci ci-g" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Dedicated account manager</li>
+
+      <!-- SIGNATURE -->
+      <div class="price-card-new price-card-signature reveal">
+        <span class="plan-badge-new pb-signature">Signature</span>
+        <div class="plan-name-new">Signature</div>
+        <div class="plan-desc-new">For owners, developers, investors, and professionals seeking complete visibility, strategic support, and premium property management tools.</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-feats-new">
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Everything in Premium</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Pre-Move-In & Check-Out Inspections</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Legal AI Consultant & Document Generation</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Wealth & Tax Planning Insights</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Priority Support</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Dedicated Account Manager</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Multi-Property Analytics</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Future Residency & Relocation Guidance</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>Priority Access To New Features</li>
+          <li><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>White-Label Platform Opportunities</li>
         </ul>
-
       </div>
+    </div>
+
+    <!-- AVAILABLE ANYWHERE -->
+    <div class="available-anywhere reveal">
+      <h3>Available Anywhere</h3>
+      <div class="device-grid">
+        <div class="device-item"><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>iPhone App</div>
+        <div class="device-item"><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M12 18h.01"/></svg>Android App</div>
+        <div class="device-item"><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M2 17h20"/></svg>Web Dashboard</div>
+        <div class="device-item"><svg class="ci" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>Tablet Optimised</div>
+      </div>
+    </div>
+
+    <!-- WHITE-LABEL OPPORTUNITIES -->
+    <div class="white-label-card reveal">
+      <h3>White-Label Platform Opportunities</h3>
+      <p>Allow agencies, developers, property managers, and service businesses to launch a branded version of the Remote Rentals ecosystem under their own identity.</p>
+      <p class="white-label-note">Future white-label partnership opportunities will be available for selected organisations.</p>
     </div>
   </div>
 </section>
