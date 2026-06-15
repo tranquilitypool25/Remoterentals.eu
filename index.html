@@ -307,8 +307,14 @@ section{position:relative}
 #coming-soon::before{
   content:'';position:absolute;top:-180px;left:50%;transform:translateX(-50%);
   width:900px;height:450px;
-  background:radial-gradient(ellipse,rgba(212,175,55,.055) 0%,transparent 70%);
-  pointer-events:none;
+  background:radial-gradient(ellipse,rgba(212,175,55,.08) 0%,transparent 70%);
+  pointer-events:none;filter:blur(40px);
+}
+#coming-soon::after{
+  content:'';position:absolute;bottom:-200px;right:-100px;
+  width:600px;height:600px;
+  background:radial-gradient(ellipse,rgba(212,175,55,.06),transparent 70%);
+  pointer-events:none;filter:blur(60px);
 }
 .cs-grid{
   display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:48px;
@@ -350,6 +356,9 @@ section{position:relative}
 .cs-badge:hover{background:rgba(212,175,55,.14);border-color:rgba(212,175,55,.4)}
 .cs-badge::before{
   content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);
+}
+.coming-soon-subtitle{
+  font-size:15px;color:rgba(255,255,255,.65);line-height:1.8;margin-top:16px;max-width:800px;margin-left:auto;margin-right:auto;
 }
 
 /* ── PARTNER RESERVATION ── */
@@ -759,7 +768,7 @@ footer{
     </div>
     <div class="feat-grid">
       <div class="feat-card reveal d1">
-        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="f-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
         <h3>Rent Tracking</h3>
         <p>See every payment the moment it lands, with a clear history for each unit. No spreadsheets, no chasing.</p>
       </div>
@@ -843,7 +852,8 @@ footer{
   <div class="inner">
     <div class="s-head reveal">
       <div class="eyebrow">Coming Soon</div>
-      <h2 class="s-title s-title-light" style="margin-top:18px">Powerful features<br>launching soon.</h2>
+      <h2 class="s-title s-title-light" style="margin-top:18px">Powerful Features Coming Soon</h2>
+      <p class="coming-soon-subtitle reveal">We're building a complete property ownership ecosystem designed to simplify management, improve visibility, and unlock future opportunities for landlords, investors, developers, and property professionals.</p>
     </div>
     <div class="cs-grid">
       <div class="cs-card reveal d1">
@@ -903,13 +913,16 @@ footer{
       </div>
     </div>
     <div class="cs-badge-row">
-      <span class="cs-badge">Tenant Sourcing</span>
+      <span class="cs-badge">Tenant Sourcing & Matching</span>
       <span class="cs-badge">Contractor Management</span>
-      <span class="cs-badge">Inspections</span>
-      <span class="cs-badge">Legal Documents</span>
-      <span class="cs-badge">Accounting Integration</span>
-      <span class="cs-badge">Tax Planning</span>
+      <span class="cs-badge">Inspection & Inventory Reports</span>
+      <span class="cs-badge">Legal AI Consultant & Document Generation</span>
+      <span class="cs-badge">Wealth & Tax Planning Insights</span>
+      <span class="cs-badge">Residency & Relocation Guidance</span>
+      <span class="cs-badge">Accounting & Financial Integration</span>
       <span class="cs-badge">Multi-Property Analytics</span>
+      <span class="cs-badge">Trusted Service Provider Network</span>
+      <span class="cs-badge">White-Label Platform Opportunities</span>
     </div>
   </div>
 </section>
